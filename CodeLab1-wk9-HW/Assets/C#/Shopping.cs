@@ -23,11 +23,11 @@ public class Shopping : MonoBehaviour
         DisplayPlayerBuy();
     }
     //Dictionary - player owned items
-    private Dictionary<string, int> playerOwned = new Dictionary<string, int>();
+   public Dictionary<string, int> playerOwned = new Dictionary<string, int>();
     //Dictionary - shopping cart
-    private Dictionary<string, int> playerBuy = new Dictionary<string, int>();
+    public Dictionary<string, int> playerBuy = new Dictionary<string, int>();
 
-    private Dictionary<string, int> fakeOne = new Dictionary<string, int>();
+  //  private Dictionary<string, int> fakeOne = new Dictionary<string, int>();
 
     public void AddResource(string resourceType, int amountToAdd)
     {
@@ -88,9 +88,18 @@ public class Shopping : MonoBehaviour
     
     public void BuyItems()
     {
-        fakeOne = playerBuy;
-        playerBuy = playerOwned;
-        playerOwned = fakeOne;
+        foreach (var item in playerBuy)
+        {
+            string key = item.Key;
+            if (playerOwned.ContainsKey(key))
+            {
+                playerOwned[key]+= playerBuy[key];
+            }
+            else
+            {
+                playerOwned.Add(item.Key, item.Value);
+            }
+        }
         clearAll();
     }
     
